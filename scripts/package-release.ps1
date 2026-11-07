@@ -62,6 +62,12 @@ Copy-Item -LiteralPath $dllPath        -Destination (Join-Path $stagingRoot "$mo
 Copy-Item -LiteralPath $manifestPath   -Destination (Join-Path $stagingRoot "manifest.json")
 Copy-Item -LiteralPath $changelogSrc   -Destination (Join-Path $stagingRoot "changelog.txt")
 
+# Mod thumbnail (the game looks for <mod folder>\thumbnail.png)
+$thumbnailSrc = Join-Path $repoRoot "thumbnail.png"
+if (Test-Path $thumbnailSrc) {
+    Copy-Item -LiteralPath $thumbnailSrc -Destination (Join-Path $stagingRoot "thumbnail.png")
+}
+
 # Translation files -- the game loads <mod folder>\Translations\<language>.json
 $translationsSrc = Join-Path $repoRoot "Translations"
 if (Test-Path $translationsSrc) {

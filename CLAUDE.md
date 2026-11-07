@@ -93,7 +93,8 @@ Character limits are enforced by the Hub and **cannot be changed after a version
 ## Hub Packaging Requirements
 
 - **ZIP structure:** the zip root is the mod folder (`OutpostOverview/manifest.json`), so players can extract directly into `Mods/`. `scripts/package-release.ps1` handles this.
-- **Files in zip:** `OutpostOverview.dll`, `manifest.json`, `changelog.txt`, `Translations/*.json`. Nothing else.
+- **Files in zip:** `OutpostOverview.dll`, `manifest.json`, `changelog.txt`, `thumbnail.png`, `Translations/*.json`. Nothing else.
+- **Thumbnail:** `thumbnail.png` (512×512, square like other mods) in the repo root; the game looks for `<mod folder>\thumbnail.png` (`ModManifest.THUMBNAIL_NAME`, case-insensitive). Source: `docs/art/thumbnail.html` (self-drawn SVG, no game assets). Re-render with headless Edge: `msedge --headless=new --window-size=512,512 --screenshot=<out>.png file:///<path>/thumbnail.html`.
 - **`changelog.txt` format** — plain text, cumulative, newest first:
   ```
   v0.1.1 | 2026-11-08

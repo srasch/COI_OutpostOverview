@@ -1,0 +1,83 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;width:512px;height:512px;overflow:hidden;background:#15181c;}
+  svg{display:block}
+</style></head>
+<body>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a3038"/>
+      <stop offset="1" stop-color="#121519"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f353d"/>
+      <stop offset="1" stop-color="#23282e"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.035" stroke-width="2"/>
+    </pattern>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#grid)"/>
+
+  <!-- world-map hint: globe arcs top right -->
+  <g opacity="0.16" stroke="#7fb3e6" stroke-width="5" fill="none">
+    <circle cx="440" cy="70" r="110"/>
+    <ellipse cx="440" cy="70" rx="48" ry="110"/>
+    <path d="M330 70H550M342 20H538M342 120H538"/>
+  </g>
+
+  <!-- title -->
+  <text x="40" y="92" font-size="56" font-weight="800" fill="#f2f4f6" letter-spacing="1">OUTPOST</text>
+  <text x="40" y="146" font-size="56" font-weight="800" fill="#f5b83d" letter-spacing="1">OVERVIEW</text>
+
+  <!-- window panel -->
+  <rect x="28" y="182" width="456" height="300" rx="14" fill="url(#panel)" stroke="#495260" stroke-width="3"/>
+  <rect x="28" y="182" width="456" height="40" rx="14" fill="#3a424d"/>
+  <rect x="28" y="208" width="456" height="14" fill="#3a424d"/>
+  <circle cx="54" cy="202" r="7" fill="#f5b83d"/>
+  <rect x="72" y="196" width="150" height="12" rx="6" fill="#8b95a3"/>
+  <!-- close x -->
+  <path d="M452 194l14 14M466 194l-14 14" stroke="#aab3bf" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- row 1: iron-ish (blue-grey ore), 62% green -->
+  <g transform="translate(46,240)">
+    <rect width="420" height="70" rx="10" fill="#1b1f24" stroke="#3b434d" stroke-width="2"/>
+    <rect x="0" y="0" width="16" height="70" rx="8" fill="#2c3238"/>
+    <polygon points="44,18 66,12 80,28 74,52 50,58 36,40" fill="#8fa2b8" stroke="#c9d5e3" stroke-width="3"/>
+    <rect x="102" y="24" width="210" height="22" rx="11" fill="#2b3138"/>
+    <rect x="102" y="24" width="130" height="22" rx="11" fill="#5bc26a"/>
+    <!-- pause -->
+    <rect x="352" y="14" width="50" height="42" rx="8" fill="#323941"/>
+    <rect x="368" y="24" width="7" height="22" rx="2" fill="#d8dee6"/>
+    <rect x="380" y="24" width="7" height="22" rx="2" fill="#d8dee6"/>
+  </g>
+
+  <!-- row 2: copper (orange ore), 92% yellow -->
+  <g transform="translate(46,320)">
+    <rect width="420" height="70" rx="10" fill="#1b1f24" stroke="#3b434d" stroke-width="2"/>
+    <rect x="0" y="0" width="16" height="70" rx="8" fill="#2c3238"/>
+    <polygon points="40,22 60,10 80,24 78,48 56,60 38,46" fill="#d9874a" stroke="#f3c29b" stroke-width="3"/>
+    <rect x="102" y="24" width="210" height="22" rx="11" fill="#2b3138"/>
+    <rect x="102" y="24" width="193" height="22" rx="11" fill="#f2c23a"/>
+    <rect x="352" y="14" width="50" height="42" rx="8" fill="#323941"/>
+    <rect x="368" y="24" width="7" height="22" rx="2" fill="#d8dee6"/>
+    <rect x="380" y="24" width="7" height="22" rx="2" fill="#d8dee6"/>
+  </g>
+
+  <!-- row 3: coal (dark ore), 100% red, paused (highlighted) -->
+  <g transform="translate(46,400)">
+    <rect width="420" height="70" rx="10" fill="#1b1f24" stroke="#3b434d" stroke-width="2"/>
+    <rect x="0" y="0" width="16" height="70" rx="8" fill="#2c3238"/>
+    <polygon points="42,16 64,12 80,30 72,54 48,58 36,36" fill="#4a4f57" stroke="#9aa1ab" stroke-width="3"/>
+    <rect x="102" y="24" width="210" height="22" rx="11" fill="#e0533f"/>
+    <rect x="352" y="14" width="50" height="42" rx="8" fill="#6b5420" stroke="#f5b83d" stroke-width="3"/>
+    <rect x="368" y="24" width="7" height="22" rx="2" fill="#f5b83d"/>
+    <rect x="380" y="24" width="7" height="22" rx="2" fill="#f5b83d"/>
+  </g>
+</svg>
+</body></html>
