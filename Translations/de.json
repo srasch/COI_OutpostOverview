@@ -1,0 +1,50 @@
+[
+	[
+		"OutpostOverview.WindowTitle",
+		"Weltminen"
+	],
+	[
+		"OutpostOverview.ShowReserves",
+		"Restvorrat anzeigen"
+	],
+	[
+		"OutpostOverview.ShowStatus",
+		"Status anzeigen"
+	],
+	[
+		"OutpostOverview.NoMines",
+		"Noch keine Weltminen. Repariere eine Mine auf der Weltkarte, damit sie hier erscheint."
+	],
+	[
+		"OutpostOverview.ColMine",
+		"Mine"
+	],
+	[
+		"OutpostOverview.ColStorage",
+		"Füllstand"
+	],
+	[
+		"OutpostOverview.ColReserve",
+		"Rest"
+	],
+	[
+		"OutpostOverview.ColYears",
+		"Jahre"
+	],
+	[
+		"OutpostOverview.Unlimited",
+		"unbegrenzt"
+	],
+	[
+		"OutpostOverview.SortTooltip",
+		"Klicken sortiert nach dieser Spalte, erneutes Klicken kehrt die Reihenfolge um, ein dritter Klick stellt deine eigene Reihenfolge wieder her."
+	],
+	[
+		"OutpostOverview.DragTooltip",
+		"Ziehen, um die Minen in deine eigene Reihenfolge zu bringen."
+	],
+	[
+		"OutpostOverview.PauseTooltip",
+		"Diese Mine pausieren / fortsetzen"
+	]
+]

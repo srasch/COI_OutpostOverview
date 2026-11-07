@@ -1,0 +1,9 @@
+bin/
+obj/
+*.user
+*.suo
+*.lscache
+.vs/
+# Ignore .claude/ contents except the skills folder (which is version-controlled)
+.claude/*
+!.claude/skills

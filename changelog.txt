@@ -1,0 +1,4 @@
+v0.1.0 | 2026-11-07
+* Initial release: window listing all repaired world map mines (toolbar button or F8)
+* Shows storage fill level with product icon, status, and optionally the remaining reserve with years-left estimate
+* Pause or resume each mine directly from the list

@@ -1,0 +1,14 @@
+{
+	"id": "OutpostOverview",
+	"version": "0.1.0",
+	"display_name": "Outpost Overview",
+	"description_short": "One window showing all your world map mines: storage fill level, remaining reserves and status at a glance, with a pause button for each mine.",
+	"description_long": "Tired of clicking through every world map mine to see which one is full or running dry?\n\nOutpost Overview adds a window (toolbar button or F8) that lists all your repaired world map mines in one place.\n\nFeatures:\n- One compact line per mine: product icon, name, storage fill level, remaining reserve, estimated years left and status\n- Sort by storage, reserve, years left or name with a click on the column header, or drag the mines into your own order\n- Pause or resume a mine directly from the overview\n- The toolbar button appears once you own a world mine; F8 always works\n- Sorting and your own order are remembered per game\n- Works on existing saves, install and go\n\nSafe to remove: the mod only reads the game's own data and writes nothing into your save (window settings are kept in a small file in the mod folder).",
+	"primary_dlls": [ "OutpostOverview.dll" ],
+	"non_locking_dll_load": true,
+	"can_add_to_saved_game": true,
+	"can_remove_from_saved_game": true,
+	"authors": [ "Nymotikas" ],
+	"min_game_version": "0.8.8",
+	"max_verified_game_version": "0.8.8b"
+}
