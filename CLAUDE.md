@@ -18,13 +18,15 @@ The maintainer is not necessarily a programmer by trade. Code should be explaine
 
 ## Distribution
 
-- **Channel:** [COI Mod Hub](https://hub.coigame.com) — not uploaded yet. After the first upload, put the mod page URL here (e.g. `https://hub.coigame.com/Mod/<n>`) and in the skills' Hub reminders. Players download and install updates manually; the Hub does NOT auto-update.
+- **Exclusive channel:** [COI Mod Hub](https://hub.coigame.com/Mod/1277) — first uploaded as v0.1.0 on 2026-11-07. Players download and install updates manually; the Hub does NOT auto-update.
+- **Hub forum:** bug reports go to [/Forum/Mods/OutpostOverview/bugs](https://hub.coigame.com/Forum/Mods/OutpostOverview/bugs), ideas/feedback to [/Forum/Mods/OutpostOverview/ideas](https://hub.coigame.com/Forum/Mods/OutpostOverview/ideas) (URL pattern as for other Hub mods — verify once).
 - **License (mod's own code):** MIT (see `LICENSE`).
 - **License (game-code excerpts):** Per the [COI Modding Policy](https://www.captain-of-industry.com/modding-policy), short excerpts of game code (type names, method signatures, small samples — e.g. throughout `docs/MODDING-REFERENCE.md`) are © MaFi Games and used only under the modding policy. The MIT grant explicitly excludes them; both `LICENSE` and `docs/MODDING-REFERENCE.md` carry the required attribution notice.
 - **Hub license picker:** configured once in the Hub UI at first upload and persists across versions.
 
 ## External Resources
 
+- **Hub mod page:** https://hub.coigame.com/Mod/1277
 - **Modding policy:** https://www.captain-of-industry.com/modding-policy
 - **Official modding repo:** https://github.com/MaFi-Games/Captain-of-industry-modding
 - **Sister project (same conventions, source of skills/scripts/docs):** `B:\Projekte\COI_Mods\COI-ResearchQueue`

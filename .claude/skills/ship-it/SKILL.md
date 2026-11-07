@@ -160,7 +160,7 @@ Tell the user:
 
 > Your release zip is ready at `bin\pkg\OutpostOverview-v<version>.zip`.
 >
-> Upload it to the COI Hub at the mod's Hub page (URL in CLAUDE.md, or https://hub.coigame.com for the very first upload) using the "upload new version" option.
+> Upload it to the COI Hub at [hub.coigame.com/Mod/1277](https://hub.coigame.com/Mod/1277) using the "upload new version" option.
 >
 > - The Hub will automatically parse `changelog.txt` from inside the zip and display it -- no need to paste anything manually
 > - Leave the license as previously selected (it persists across versions and is set once at first upload)

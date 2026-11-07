@@ -122,7 +122,7 @@ Don't ship a new release. The COI Hub has a **"Re-verify game version range"** w
    git add manifest.json README.md
    git commit -m "Update max verified game version to X.Y.Z"
    ```
-4. Tell the user to open the mod's Hub page (URL in CLAUDE.md), open the latest version, and use **Re-verify game version range** with `X.Y.Z`.
+4. Tell the user to open https://hub.coigame.com/Mod/1277, open the latest version, and use **Re-verify game version range** with `X.Y.Z`.
 
 ### Case B: Something broke and was fixed, or a feature was added
 

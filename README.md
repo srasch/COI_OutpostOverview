@@ -4,6 +4,8 @@
 
 Source code for the **Outpost Overview** mod for [Captain of Industry](https://www.captain-of-industry.com).
 
+Players: get the mod from the [COI Mod Hub](https://hub.coigame.com/Mod/1277). Install instructions, changelog and the mod forum live there.
+
 ## Features
 
 - Toolbar button (next to the world map, appears once you own a world mine) and hotkey **F8** (rebindable in Settings > Controls)

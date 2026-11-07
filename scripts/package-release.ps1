@@ -77,4 +77,4 @@ if (-not (Test-Path $zipPath)) {
 
 Write-Host ""
 Write-Host "Package ready: $zipPath"
-Write-Host "Upload this zip to the COI Hub (https://hub.coigame.com)"
+Write-Host "Upload this zip to the COI Hub at https://hub.coigame.com/Mod/1277"
