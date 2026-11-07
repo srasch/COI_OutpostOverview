@@ -1,4 +1,9 @@
 v0.1.0 | 2026-11-07
-* Initial release: window listing all repaired world map mines (toolbar button or F8)
-* Shows storage fill level with product icon, status, and optionally the remaining reserve with years-left estimate
+* Initial release: a window listing all your repaired world map mines, opened with the toolbar button next to the world map or with F8 (rebindable in Settings > Controls)
+* One compact line per mine: product icon, name, storage fill level (yellow at 90 %, red when full), remaining reserve, estimated years left and status
+* Sort by mine name, storage, reserve or years left with a click on the column header, or drag the mines into your own order
 * Pause or resume each mine directly from the list
+* Hide the reserve and status columns to make the window narrower; with the status column hidden, the mine name shows the status by color
+* The window can be moved and pinned; sorting, your own order and the column settings are remembered per game
+* The toolbar button appears once you own a world mine; F8 always works
+* English and German texts
