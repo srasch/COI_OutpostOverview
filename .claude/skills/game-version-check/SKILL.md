@@ -30,7 +30,7 @@ The OutpostOverview mod uses only **public** game APIs (no reflection): `WorldMa
 
 1. Read the first line of the game's `changelog.txt`:
    ```
-   powershell.exe -ExecutionPolicy Bypass -Command "& { $r = [System.Environment]::GetEnvironmentVariable('COI_ROOT','User'); if (-not $r) { $r = [System.Environment]::GetEnvironmentVariable('COI_ROOT','Machine') }; Get-Content (Join-Path $r 'changelog.txt') | Select-Object -First 1 }"
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& { $r = [System.Environment]::GetEnvironmentVariable('COI_ROOT','User'); if (-not $r) { $r = [System.Environment]::GetEnvironmentVariable('COI_ROOT','Machine') }; Get-Content (Join-Path $r 'changelog.txt') | Select-Object -First 1 }"
    ```
    Strip the leading `v` and everything from ` | ` onward (e.g. `0.8.8b`).
 
@@ -89,7 +89,7 @@ Immediately after the user's feedback (don't ask again):
 
 1. Find the newest log:
    ```
-   powershell.exe -ExecutionPolicy Bypass -Command "& { $p = Join-Path ([System.Environment]::GetFolderPath('ApplicationData')) 'Captain of Industry\Logs'; Get-ChildItem $p -File | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName }"
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& { $p = Join-Path ([System.Environment]::GetFolderPath('ApplicationData')) 'Captain of Industry\Logs'; Get-ChildItem $p -File | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName }"
    ```
 2. Extract all lines containing `OutpostOverview` (including `Failed to register action 'OutpostOverview.` and translation warnings like `ships translations of N strings that it does not own`).
 3. Also look for exceptions whose stack trace mentions `OutpostOverview`.
@@ -101,13 +101,15 @@ Immediately after the user's feedback (don't ask again):
 
 For any failure or discrepancy: investigate with the user, fix, rebuild (`dotnet build OutpostOverview.sln`), have the user re-test only the failed items, pull the log again. Repeat until clean.
 
+- **Build is clean but the feature doesn't work in-game:** the API still exists but its *behavior* changed. Compare with a mod in `%APPDATA%\Captain of Industry\Mods\` that still works for the same feature (decompile it: `ilspycmd <dll> -p -o <scratchpad dir>`) and with the game's own usage (decompile `Mafi.Unity.dll` / `Mafi.Core.dll` fully and grep). Example from 0.8.8: `IToolbarItemController.IsVisible` now means "button shown", and `IShortcutsRegistry` isn't available in `IMod.Initialize`.
+
 If everything passed: "All clear -- the mod is fully compatible with this game version."
 
 ---
 
 ## Step 5 -- Update verified version (conditional)
 
-**Skip this step if the game version from Step 0 already matches `max_verified_game_version`.** Say something lighthearted and stop.
+**Skip this step if the game version from Step 0 already matches `max_verified_game_version` — unless code was changed in Step 4: then tell the user the fixes are unreleased and suggest `/ship-it`.** Otherwise say something lighthearted and stop.
 
 ### Case A: Nothing broke -- no code changes needed
 
