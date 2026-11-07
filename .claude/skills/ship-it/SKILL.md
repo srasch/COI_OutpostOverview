@@ -89,7 +89,7 @@ Then write the bullets using these rules:
 - Use the issue details AND the code diff to write a concise but meaningful description
 - Omit commits that have no player-visible effect (build changes, README edits, code cleanup, docs, comment fixes)
 - One bullet per GitHub issue maximum. Merge all commits for that issue into a single bullet, even if it means a more verbose description.
-- If the project has a GitHub repo (see CLAUDE.md), append the issue link at the end of the bullet: `([#N](<repo url>/issues/N))`
+- Append the issue link at the end of the bullet: `([#N](https://github.com/srasch/COI_OutpostOverview/issues/N))`
 - No em dashes anywhere
 - No headers, no sections -- just the bullet list
 

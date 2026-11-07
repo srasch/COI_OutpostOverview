@@ -11,7 +11,7 @@ The maintainer is not necessarily a programmer by trade. Code should be explaine
 - **Author:** Nymotikas
 - **Mod ID:** `OutpostOverview`
 - **Display name:** Outpost Overview
-- **GitHub repo:** none yet (add here once created; then also add it to `links` in `manifest.json`)
+- **GitHub repo:** [`srasch/COI_OutpostOverview`](https://github.com/srasch/COI_OutpostOverview) (remote `origin`: `git@github.com:srasch/COI_OutpostOverview.git`) — source code only, not a player-facing channel; direct players to the Hub.
 - **Game:** Captain of Industry (verified with 0.8.8b)
 - **Framework:** Mafi (.NET 4.8)
 - **Mod type:** `IMod`
@@ -119,6 +119,7 @@ Character limits are enforced by the Hub and **cannot be changed after a version
 - Explain what code does in plain language when making changes.
 - Before writing code for a new feature, ask clarifying questions until the intent is clear.
 - **Version bumping:** if a session involves code changes, proactively ask whether a version bump should be included before the session ends; if yes, use `/ship-it`.
+- **GitHub Issues:** before starting bug fix or feature work, check `gh issue list` for a related open issue and remind the user, so the commit can reference it.
 - **Commit messages:** single line describing what changed, no body. With GitHub issues: append `Fixes #N` (bugs) or `Closes #N` (enhancements).
 - **Prefer public APIs and game commands** over reflection. If reflection ever becomes necessary, add a probe/health-check mechanism like the one in COI-ResearchQueue (`ReflectionProbe`) and extend `/game-version-check` accordingly.
 - **Reuse the game's translated strings** (`Mafi.Core.Tr`, e.g. `Tr.ReserveStatus`, `Tr.EntityStatus__*`) where possible; only add own texts to `ModStrings` and translate them in `Translations/`.
