@@ -1,3 +1,9 @@
+v0.2.0 | 2026-11-07
+* New: automatic pause / resume per mine. Click the gear button next to a mine's pause button to open storage-style sliders: the red slider pauses the mine once its storage reaches that level, the green slider resumes it when the storage drops below that level (5 % steps)
+* A small hint like "30-90 %" next to the mine name shows which mines have automatic limits set
+* Automatic pause / resume also works while the window is closed, and the limits are remembered per game
+* Pausing or resuming a mine by hand is respected until the storage crosses the next limit
+
 v0.1.0 | 2026-11-07
 * Initial release: a window listing all your repaired world map mines, opened with the toolbar button next to the world map or with F8 (rebindable in Settings > Controls)
 * One compact line per mine: product icon, name, storage fill level (yellow at 90 %, red when full), remaining reserve, estimated years left and status
