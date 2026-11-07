@@ -2365,3 +2365,22 @@ public class MyController : WindowController<MyWindow>, IToolbarItemController {
 ### ⚠️ `Window.WindowSize(Px maxWidth, Px maxHeight)` sizes are MAXIMUMS (verified 0.8.8b)
 For a pixel value the game sets `MaxWidth/MaxHeight = value` and `Width/Height = PADDED_SIZE_PERCENT` (nearly the whole screen) — the window becomes as big as allowed, regardless of content. Use `Px.Auto` to size to the content: `WindowSize(820.px(), Px.Auto)`; set an exact width later with `WindowWidth(px)`. Cap scrollable content with `ScrollColumn.MaxHeight(...)`.
 With `AddBodySingle` (Panel `.Fill()`), the scrollbar gotcha described under "Scrollbar visibility in injected panels" applies as well: use `ScrollerHidden()` and toggle `ScrollerAlwaysVisible()` from a `GeometryChangedEvent` callback on `scrollView.contentContainer` and `scrollView.contentViewport` (use fully-qualified `UnityEngine.UIElements.*` names to avoid clashes with Mafi's `Label`/`Column`).
+
+### Storage-style sliders: `BufferSlider` (`Mafi.Unity.Ui.Library.Inspectors`, verified 0.8.8b)
+
+The import/export sliders of storages are `BufferSlider`s inside a `BufferWithSlider`. `BufferWithSlider` only offers fixed presets (`AddTruckImportSlider`, `AddTransportsFromSlider`, ...) and keeps its slider row private, so for custom sliders rebuild its structure:
+
+```csharp
+var bar = new ProgressBar(); bar.Height(16.px()).AlignSelfStretch();
+var barColumn = new Column(); barColumn.AlignItemsStretch().Fill(); barColumn.Add(bar);
+var low  = new BufferSlider(alignLeft: true, isInverted: false, flipHandle: false, _ => label1, steps: 10).StyleAsSoilFertility();   // green, range 0..handle
+var high = new BufferSlider(alignLeft: true, isInverted: true,  flipHandle: false, _ => label2, steps: 10).StyleAsAnimalSlaughter(); // red, range handle..100
+low.OppositeSlider = high; high.OppositeSlider = low;     // only hides a handle when both sit on the same step -- does NOT prevent crossing
+var row = new Row(); row.AlignItemsStretch().PaddingBottom(BufferSlider.BOTTOM_MARGIN);  // 32 px room for the handles below the bar
+row.Add(barColumn, low, high);                            // sliders position themselves absolutely over the row
+low.OnValueChanged(step => ...);  low.Value(step, capacity);  low.ProductIcon(product);   // floater shows label + quantity at step
+```
+- Constructor: `BufferSlider(bool alignLeft, bool isInverted, bool flipHandle, Func<int, LocStrFormatted> valueLabelFn, int steps = 10, Func<int, bool> showFloaterValFn = null)`. Not inverted: active range from 0 up to the handle, "off" at step 0. Inverted: active range from the handle to the end, "off" at step `Steps`.
+- Styles (colors + handle icon are private, only via these): `StyleAsTruckImport` (green, truck), `StyleAsTruckExport` (red, truck), `StyleAsTransportsFrom` (blue), `StyleAsTransportsUntil` (yellow), `StyleAsTrainNetworkUnload/Load`, `StyleAsTrainLineUnload/Load`, `StyleAsAnimalSlaughter` (red, clear/X icon), `StyleAsSoilFertility` (green, arrow icon).
+- Handles are 30×28 px; leave ~30 px horizontal padding so they don't stick out at 0 % / 100 %.
+- `Enabled` (bool) disables dragging. `SetHasInfiniteStep()` for an extra "infinite" step.

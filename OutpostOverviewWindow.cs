@@ -15,6 +15,7 @@ using Mafi.Localization;
 using Mafi.Unity.InputControl;
 using Mafi.Unity.Ui.Hud;
 using Mafi.Unity.Ui.Library;
+using Mafi.Unity.Ui.Library.Inspectors;
 using Mafi.Unity.UiStatic.Toolbar;
 using Mafi.Unity.UiToolkit;
 using Mafi.Unity.UiToolkit.Component;
@@ -50,10 +51,10 @@ public class OutpostOverviewWindowView : Window {
 	private const int COL_RESERVE = 110;
 	private const int COL_YEARS = 60;
 	private const int COL_STATUS = 130;
-	private const int COL_PAUSE = 34;
+	private const int COL_BUTTONS = 72;   // limits (gear) + pause button
 	private const int COL_GAP = 6;
 
-	private const int WINDOW_WIDTH = 820;
+	private const int WINDOW_WIDTH = 858;
 	private const int LIST_MAX_HEIGHT = 600;
 	private const int ICON_SIZE = 20;
 	private const int FONT_SIZE = 14;
@@ -64,6 +65,11 @@ public class OutpostOverviewWindowView : Window {
 
 	private const string PAUSE_ICON = "Assets/Unity/UserInterface/General/EnableMachine128.png";
 	private const string DRAG_ICON = "Assets/Unity/UserInterface/General/Drag.svg";
+	private const string LIMITS_ICON = "Assets/Unity/UserInterface/General/Configure.svg";
+	private const int LIMITS_SIDE_PADDING = 34; // room for the 30 px slider handles at both ends
+
+	// Mines whose automatic pause/resume sliders are expanded (UI state only, not saved).
+	private readonly HashSet<WorldMapMine> m_expanded = new HashSet<WorldMapMine>();
 
 	private readonly WorldMapManager m_worldMapManager;
 	private readonly IInputScheduler m_inputScheduler;
@@ -279,7 +285,7 @@ public class OutpostOverviewWindowView : Window {
 		var status = new Label(Tr.Status);
 		status.FontBold().FontSize(FONT_SIZE_HEADER).Width(COL_STATUS.px());
 		status.ObserveVisible(header, () => m_settings.ShowStatus);
-		header.Add(status, Spacer(COL_PAUSE));
+		header.Add(status, Spacer(COL_BUTTONS));
 		return header;
 	}
 
@@ -326,10 +332,17 @@ public class OutpostOverviewWindowView : Window {
 		return c;
 	}
 
-	/// <summary>Builds the single-line row of one mine.</summary>
+	/// <summary>
+	/// Builds the list entry of one mine: the single-line row, plus the (collapsible) panel with
+	/// the automatic pause/resume sliders below it.
+	/// </summary>
 	private UiComponent BuildMineRow(WorldMapMine mine) {
+		// The whole entry is what gets dragged / re-ordered.
+		var item = new Column();
+		item.AlignItemsStretch().StyleGroup().MarginBottom(2.px());
+
 		var row = new Row(COL_GAP.px());
-		row.AlignItemsCenter().StyleGroup().PaddingRight(1.pt()).MarginBottom(2.px());
+		row.AlignItemsCenter().PaddingRight(1.pt());
 
 		// Drag handle (same look as the game's reorderable recipe lists).
 		var dragHandle = new Column();
@@ -352,7 +365,15 @@ public class OutpostOverviewWindowView : Window {
 		iconCell.Add(productIcon);
 
 		var nameLabel = new Label();
-		nameLabel.FontSize(FONT_SIZE).MinWidth(COL_NAME_MIN.px()).FlexGrow(1f);
+		nameLabel.FontSize(FONT_SIZE);
+
+		// Small "30–90 %" hint when automatic pause/resume is active.
+		var limitsHint = new Label();
+		limitsHint.FontSize(FONT_SIZE_HEADER).Opacity(0.7f).MarginLeft(4.px()).Tooltip(ModStrings.LimitsActiveTooltip);
+
+		var nameCell = new Row();
+		nameCell.AlignItemsCenter().MinWidth(COL_NAME_MIN.px()).FlexGrow(1f);
+		nameCell.Add(nameLabel, limitsHint);
 
 		var storageBar = new ProgressBarPercentInline();
 		storageBar.Width(COL_STORAGE.px());
@@ -372,11 +393,31 @@ public class OutpostOverviewWindowView : Window {
 			.OnClick(() => m_inputScheduler.ScheduleInputCmd(new ToggleEnabledCmd(mine.Id)))
 			.ObserveSelected(() => mine.IsPaused);
 		pauseBtn.Tooltip(ModStrings.PauseTooltip);
-		var pauseCell = new Row();
-		pauseCell.Width(COL_PAUSE.px()).JustifyItemsCenter();
-		pauseCell.Add(pauseBtn);
 
-		row.Add(dragHandle, iconCell, nameLabel, storageBar, reserveLabel, yearsLabel, statusLabel, pauseCell);
+		var limitsBtn = new ButtonIcon(Button.General, LIMITS_ICON)
+			.Toggleable()
+			.IconSize(16, 16)
+			.OnClick(() => {
+				if (!m_expanded.Remove(mine)) m_expanded.Add(mine);
+			})
+			.ObserveSelected(() => m_expanded.Contains(mine));
+		limitsBtn.Tooltip(ModStrings.LimitsButtonTooltip);
+
+		var buttonsCell = new Row(4.px());
+		buttonsCell.Width(COL_BUTTONS.px()).JustifyItemsCenter();
+		buttonsCell.Add(limitsBtn, pauseBtn);
+
+		row.Add(dragHandle, iconCell, nameCell, storageBar, reserveLabel, yearsLabel, statusLabel, buttonsCell);
+
+		var limitsPanel = BuildLimitsPanel(mine);
+		limitsPanel.ObserveVisible(item, () => m_expanded.Contains(mine));
+
+		item.Add(row, limitsPanel);
+
+		row.Observe(() => m_settings.GetLimits(mine.Id.Value)).Do(limits => {
+			limitsHint.Value(FormatLimits(limits).AsLoc());
+			limitsHint.SetVisible(limits.IsActive);
+		});
 
 		// ── Live bindings ──
 		row.Observe(() => GetTitle(mine).Value).Do(title => nameLabel.Value(title.AsLoc()));
@@ -423,9 +464,94 @@ public class OutpostOverviewWindowView : Window {
 		reorderable.OnOrderChanged += OnRowDragged;
 		reorderable.OnBeginDrag += () => m_isDragging = true;
 		reorderable.OnEndDrag += () => m_isDragging = false;
-		row.AddManipulator(reorderable);
+		item.AddManipulator(reorderable);
 
-		return row;
+		return item;
+	}
+
+	/// <summary>
+	/// The expandable panel with the storage bar and two sliders, built like the import/export
+	/// sliders of the game's storages:
+	///   green (bottom range) = resume the mine when its storage drops below this level
+	///   red   (top range)    = pause the mine when its storage reaches this level
+	/// A slider at its end (green at 0 %, red at 100 %) is off.
+	/// </summary>
+	private UiComponent BuildLimitsPanel(WorldMapMine mine) {
+		int id = mine.Id.Value;
+
+		var title = new Label(ModStrings.LimitsTitle);
+		title.FontBold().FontSize(FONT_SIZE_HEADER).Tooltip(ModStrings.LimitsHelp);
+
+		var bar = new ProgressBar();
+		bar.Height(16.px()).AlignSelfStretch();
+		var barColumn = new Column();
+		barColumn.AlignItemsStretch().Fill();
+		barColumn.Add(bar);
+
+		var resumeSlider = new BufferSlider(alignLeft: true, isInverted: false, flipHandle: false,
+			_ => ModStrings.ResumeBelow, MineLimits.STEPS).StyleAsSoilFertility();
+		var pauseSlider = new BufferSlider(alignLeft: true, isInverted: true, flipHandle: false,
+			_ => ModStrings.PauseFrom, MineLimits.STEPS).StyleAsAnimalSlaughter();
+		resumeSlider.ProductIcon(mine.Product);
+		pauseSlider.ProductIcon(mine.Product);
+		resumeSlider.OppositeSlider = pauseSlider;
+		pauseSlider.OppositeSlider = resumeSlider;
+
+		// Same structure as the game's BufferWithSlider: bar + absolutely positioned sliders in one row,
+		// with room below the bar for the slider handles.
+		var sliderRow = new Row();
+		sliderRow.AlignItemsStretch().PaddingBottom(BufferSlider.BOTTOM_MARGIN);
+		sliderRow.Add(barColumn, resumeSlider, pauseSlider);
+
+		var percentLabel = new Label();
+		percentLabel.FontSize(FONT_SIZE).Width(50.px()).MarginLeft(8.px());
+
+		var barLine = new Row();
+		barLine.AlignItemsStart();
+		sliderRow.FlexGrow(1f);
+		barLine.Add(sliderRow, percentLabel);
+
+		var panel = new Column(2.px());
+		panel.AlignItemsStretch().PaddingTop(4.px()).PaddingBottom(2.px())
+			.PaddingLeft(LIMITS_SIDE_PADDING.px()).PaddingRight(LIMITS_SIDE_PADDING.px());
+		panel.Add(title, barLine);
+
+		// Keep the sliders apart: green must stay below red.
+		resumeSlider.OnValueChanged(step => {
+			var limits = m_settings.GetLimits(id);
+			if (limits.HasMax && step >= limits.Max) step = limits.Max - 1;
+			m_settings.SetLimits(id, new MineLimits(step, limits.Max));
+			resumeSlider.Value(step, mine.Buffer.Capacity);
+		});
+		pauseSlider.OnValueChanged(step => {
+			var limits = m_settings.GetLimits(id);
+			if (limits.HasMin && step <= limits.Min) step = limits.Min + 1;
+			m_settings.SetLimits(id, new MineLimits(limits.Min, step));
+			pauseSlider.Value(step, mine.Buffer.Capacity);
+		});
+
+		panel.Observe(() => mine.Buffer.Quantity)
+			.Observe(() => mine.Buffer.Capacity)
+			.Observe(() => m_settings.GetLimits(id))
+			.Do((quantity, capacity, limits) => {
+				Percent fill = capacity.IsPositive ? Percent.FromRatio(quantity.Value, capacity.Value) : Percent.Zero;
+				bar.Value(fill);
+				percentLabel.Value(fill.ToStringRounded().AsLoc());
+				resumeSlider.Value(limits.Min, capacity);
+				pauseSlider.Value(limits.Max, capacity);
+			});
+
+		return panel;
+	}
+
+	/// <summary>"30–90 %", "30 %–" (only resume) or "–90 %" (only pause).</summary>
+	private static string FormatLimits(MineLimits limits) {
+		string min = limits.HasMin ? limits.MinPercent.ToString() : "";
+		string max = limits.HasMax ? limits.MaxPercent.ToString() : "";
+		if (limits.HasMin && limits.HasMax) return $"{min}–{max} %";
+		if (limits.HasMin) return $"{min} %–";
+		if (limits.HasMax) return $"–{max} %";
+		return "";
 	}
 
 	// ─────────────────────────────── Values ───────────────────────────────

@@ -73,6 +73,36 @@ public static class ModStrings {
 		"OutpostOverview.DragTooltip", "Drag to arrange the mines in your own order.",
 		"tooltip of the drag handle on each row of the world mines window");
 
+	/// <summary>Tooltip of the gear button that expands the automatic pause/resume sliders.</summary>
+	public static readonly LocStr LimitsButtonTooltip = Loc.Str(
+		"OutpostOverview.LimitsButtonTooltip", "Automatic pause / resume by storage level",
+		"tooltip of the button that shows the sliders for automatically pausing and resuming a world mine");
+
+	/// <summary>Title above the sliders.</summary>
+	public static readonly LocStr LimitsTitle = Loc.Str(
+		"OutpostOverview.LimitsTitle", "Automatic pause / resume",
+		"title above the two sliders that pause/resume a world mine depending on how full its storage is");
+
+	/// <summary>Explanation shown as tooltip of the title.</summary>
+	public static readonly LocStr LimitsHelp = Loc.Str(
+		"OutpostOverview.LimitsHelp", "The mine is paused when its storage reaches the red limit and resumed when it drops below the green limit. Move a slider to its end to turn it off. Pausing or resuming by hand is respected until the next limit is crossed.",
+		"tooltip explaining the automatic pause/resume sliders of a world mine");
+
+	/// <summary>Label in the floater of the green (minimum) slider.</summary>
+	public static readonly LocStr ResumeBelow = Loc.Str(
+		"OutpostOverview.ResumeBelow", "Resume below:",
+		"label shown while dragging the slider; the mine is resumed when its storage drops below this quantity");
+
+	/// <summary>Label in the floater of the red (maximum) slider.</summary>
+	public static readonly LocStr PauseFrom = Loc.Str(
+		"OutpostOverview.PauseFrom", "Pause from:",
+		"label shown while dragging the slider; the mine is paused when its storage reaches this quantity");
+
+	/// <summary>Tooltip of the small "30–90 %" hint next to a mine name.</summary>
+	public static readonly LocStr LimitsActiveTooltip = Loc.Str(
+		"OutpostOverview.LimitsActiveTooltip", "Automatic pause / resume is active (resume below – pause from, storage level)",
+		"tooltip of the small limits hint next to a world mine name");
+
 	/// <summary>Tooltip of the pause/resume button on each mine row.</summary>
 	public static readonly LocStr PauseTooltip = Loc.Str(
 		"OutpostOverview.PauseTooltip", "Pause / resume this mine",

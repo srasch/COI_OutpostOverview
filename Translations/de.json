@@ -44,6 +44,30 @@
 		"Ziehen, um die Minen in deine eigene Reihenfolge zu bringen."
 	],
 	[
+		"OutpostOverview.LimitsButtonTooltip",
+		"Automatisch pausieren / fortsetzen nach Füllstand"
+	],
+	[
+		"OutpostOverview.LimitsTitle",
+		"Automatisch pausieren / fortsetzen"
+	],
+	[
+		"OutpostOverview.LimitsHelp",
+		"Die Mine wird pausiert, sobald ihr Lager die rote Grenze erreicht, und fortgesetzt, wenn es unter die grüne Grenze fällt. Schiebe einen Regler ganz an den Rand, um ihn abzuschalten. Manuelles Pausieren oder Fortsetzen bleibt bestehen, bis die nächste Grenze überschritten wird."
+	],
+	[
+		"OutpostOverview.ResumeBelow",
+		"Fortsetzen unter:"
+	],
+	[
+		"OutpostOverview.PauseFrom",
+		"Pausieren ab:"
+	],
+	[
+		"OutpostOverview.LimitsActiveTooltip",
+		"Automatisches Pausieren / Fortsetzen ist aktiv (fortsetzen unter – pausieren ab, Füllstand)"
+	],
+	[
 		"OutpostOverview.PauseTooltip",
 		"Diese Mine pausieren / fortsetzen"
 	]

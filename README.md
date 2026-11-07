@@ -13,6 +13,7 @@ Players: get the mod from the [COI Mod Hub](https://hub.coigame.com/Mod/1277). I
 - Sort by storage, reserve, years left or name with a click on the column header, or arrange the mines yourself by drag & drop
 - Sorting, your own order and the reserve toggle are remembered per game
 - Pause / resume a mine directly from the list
+- Automatic pause / resume per mine with storage-style sliders: pause when the storage reaches a limit, resume when it drops below another
 - English and German texts
 
 ## Compatibility
